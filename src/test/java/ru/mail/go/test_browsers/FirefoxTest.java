@@ -1,4 +1,4 @@
-package ru.mail.go.test_firefox;
+package ru.mail.go.test_browsers;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.firefox.FirefoxDriver;
