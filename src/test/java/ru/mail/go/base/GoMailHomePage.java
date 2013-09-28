@@ -29,6 +29,13 @@ public class GoMailHomePage {
         button.click();
 		return PageFactory.initElements(driver, GoMailSearchResultsPage.class);
 	}
+	
+	public GoMailSearchResultsPage SwapCurrency() {
+		
+		WebElement button = driver.findElement(By.id("change_conv"));
+		button.click();
+		return PageFactory.initElements(driver, GoMailSearchResultsPage.class);
+	}
 
 	public static GoMailHomePage navigateTo(WebDriver driver) {
 		driver.get("http://www.go.mail.ru/");
