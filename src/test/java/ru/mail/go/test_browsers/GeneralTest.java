@@ -1,19 +1,27 @@
 package ru.mail.go.test_browsers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import ru.mail.go.base.GoMailHomePage;
 import ru.mail.go.base.GoMailSearchResultsPage;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class FirefoxTest {
-  
-	private FirefoxDriver driver;
+public class GeneralTest {
+	
+	private WebDriver driver;
 	private GoMailHomePage homePage;
 	
 	@Test
@@ -58,14 +66,6 @@ public class FirefoxTest {
 		Assert.assertEquals(resultsPage.getResultCurrency(), "украинской гривны");
 	}
 	
-	@Test(expectedExceptions = NoSuchElementException.class)
-    public void CheckNegativeValue() {
-		
-		GoMailSearchResultsPage resultsPage = homePage.searchFor("-100 рублей евро");
-		
-		resultsPage.getConverterTitle();
-	}
-    
 	@Test
     public void CheckDecimalFractionValue() {
 		
@@ -93,14 +93,6 @@ public class FirefoxTest {
 		Assert.assertNotEquals(resultsPage.getMoneyResult(), moneyResult);
 	}
     
-	@Test(expectedExceptions = NoSuchElementException.class)
-    public void CheckCommonFractions() {
-		
-		GoMailSearchResultsPage resultsPage = homePage.searchFor("1/2 рублей евро");
-		
-		resultsPage.getConverterTitle();
-	}
-	
 	@Test
     public void CheckZeroInputData() {
 		
@@ -139,22 +131,36 @@ public class FirefoxTest {
     	Assert.assertNotEquals(resultsPage.getMoneyResult(), "0");
     }
     
-    @BeforeTest
+    /*@BeforeTest
     public void setupSelenium() {
 		
 		driver = new FirefoxDriver();
+    }*/
+    
+    @BeforeMethod
+    @Parameters({"browser", "hub", "url"})
+    public void setUp(String browser, String hub, String url) throws MalformedURLException {
+        if (browser.toLowerCase().equals("chrome"))
+            this.driver = new RemoteWebDriver(new URL(hub), DesiredCapabilities.chrome());
+        else if (browser.toLowerCase().equals("firefox"))
+            this.driver = new RemoteWebDriver(new URL(hub), DesiredCapabilities.firefox());
+        else
+            throw new NotImplementedException(); 
+        this.driver.manage().window().maximize();
+        this.driver.get(url);
     }
 
-    @AfterTest
+    @AfterMethod
     public void closeSelenium() {
     	
     	driver.close();
 		driver.quit();
     }
     
+    /*
     @BeforeMethod
     public void OpenPage() {
     	
     	homePage = GoMailHomePage.navigateTo(driver);
-    }
+    }*/
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="auto test framework tests"
+	verbose="0"
+ 	thread-count="4"
+ 	parallel="tests">
+ 	
+ 	<parameter name="url" value="http://go.mail.ru"/>
+    <parameter name="hub" value="http://localhost:4444/wd/hub"/>
+    
+    <test name="chrome">
+    	<parameter name="browser" value="chrome"/>
+    	<classes>
+      		<class name="ru.mail.go.test_browsers.GeneralTest"/>
+    	</classes>
+  	</test> <!-- Test -->
+  	
+  	<test name="firefox">
+    	<parameter name="browser" value="firefox"/>
+    	<classes>
+      		<class name="ru.mail.go.test_browsers.GeneralTest"/>
+    	</classes>
+  	</test> <!-- Test -->
+</suite> <!-- Suite -->
